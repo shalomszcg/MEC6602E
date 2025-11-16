@@ -6,7 +6,7 @@
 #include <chrono>
 #include <iomanip>
 #include <limits>
-#include <omp.h> // <-- NEW: Include OpenMP header
+#include <omp.h> 
 
 // Ghost cell layers
 #define NGHOST 2
@@ -25,7 +25,7 @@ struct ConservativeVars {
     
     ConservativeVars() : rho(0), rhou(0), rhov(0), rhoE(0) {}
 
-    // --- NEW: Operator overloads (needed for RK4 math) ---
+   
     ConservativeVars operator+(const ConservativeVars& b) const {
         ConservativeVars result;
         result.rho = rho + b.rho;
@@ -64,7 +64,7 @@ struct ConservativeVars {
 inline ConservativeVars operator*(double s, const ConservativeVars& v) {
     return v * s;
 }
-// --- End of new operators ---
+
 
 
 // Struct to hold primitive variables
@@ -355,7 +355,7 @@ public:
         R_temp.resize(ncells); 
         dt_local.resize(ncells, 0.0);
         
-        // --- NEW: Resize JST buffers ---
+        
         spectral_radius_cell.resize(ncells, 0.0);
         pressure_sensor.resize(ncells, 0.0);
         D_i.resize(ncells); // i-face flux
@@ -606,8 +606,7 @@ public:
         
         int cell_inci = mesh.cell_stride();
 
-        // --- Part 1: Compute i-direction pressure sensor (cell-centered) ---
-        // (Uses p at i-1, i, i+1)
+       
         #pragma omp parallel for
         for (int jj = NGHOST; jj < mesh.njc + NGHOST; jj++) {
             for (int ii = NGHOST; ii < mesh.nic + NGHOST; ii++) {
@@ -625,8 +624,7 @@ public:
             }
         }
         
-        // --- Part 2: Compute i-dissipation flux D_i (at i+1/2 faces) ---
-        // (Uses U at i-1, i, i+1, i+2)
+       
         #pragma omp parallel for
         for (int jj = NGHOST; jj < mesh.njc + NGHOST; jj++) {
             for (int ii = NGHOST - 1; ii < mesh.nic + NGHOST; ii++) {
@@ -654,8 +652,7 @@ public:
             }
         }
         
-        // --- Part 3: Compute j-direction pressure sensor (cell-centered) ---
-        // (Uses p at j-1, j, j+1)
+       
         #pragma omp parallel for
         for (int jj = NGHOST; jj < mesh.njc + NGHOST; jj++) {
             for (int ii = NGHOST; ii < mesh.nic + NGHOST; ii++) {
@@ -675,8 +672,7 @@ public:
             }
         }
         
-        // --- Part 4: Compute j-dissipation flux D_j (at j+1/2 faces) ---
-        // (Uses U at j-1, j, j+1, j+2)
+        
         #pragma omp parallel for
         for (int jj = NGHOST - 1; jj < mesh.njc + NGHOST; jj++) {
             for (int ii = NGHOST; ii < mesh.nic + NGHOST; ii++) {
@@ -703,7 +699,7 @@ public:
             }
         }
         
-        // --- Part 5: Add dissipation to residual R ---
+       
         #pragma omp parallel for
         for (int jj = NGHOST; jj < mesh.njc + NGHOST; jj++) {
             for (int ii = NGHOST; ii < mesh.nic + NGHOST; ii++) {
@@ -746,7 +742,7 @@ public:
     // --- Implicit Residual Smoothing ---
     void smoothResiduals() {
         if (!use_residual_smoothing || res_smoothing_coeff < EPS) {
-            return; // Skip if smoothing is off
+            return; 
         }
 
         int cell_inci = mesh.cell_stride();
@@ -851,8 +847,7 @@ public:
         int cell_inci = mesh.cell_stride();
         
         bool is_valid = true;
-        // This check is fast, rare, and needs to report coordinates,
-        // so it's best to keep it serial.
+       
         for (int jj = NGHOST; jj < mesh.njc + NGHOST; jj++) {
             for (int ii = NGHOST; ii < mesh.nic + NGHOST; ii++) {
                 int idx = jj * cell_inci + ii;
@@ -950,26 +945,26 @@ public:
         }
     }
     
-    // --- MODIFIED: L2 norm of continuity (rho) residual only ---
+   
     double computeResidualNorm() {
         double L2_norm = 0.0;
         int cell_inci = mesh.cell_stride();
         int count = 0;
         
-        // Using the smoothed residual for monitoring is acceptable.
+        
         #pragma omp parallel for reduction(+:L2_norm, count)
         for (int jj = NGHOST; jj < mesh.njc + NGHOST; jj++) {
             for (int ii = NGHOST; ii < mesh.nic + NGHOST; ii++) {
                 int idx = jj * cell_inci + ii;
                 
-                // Only sum the square of the continuity residual
+                
                 L2_norm += R[idx].rho * R[idx].rho;
                 
                 count++;
             }
         }
         
-        // Normalize by the count (1.0 to ensure floating point division)
+        
         return std::sqrt(L2_norm / (1.0 * count));
     }
     
@@ -997,7 +992,7 @@ public:
             
             if (iter == 0) {
                 computeResiduals();
-                addArtificialDissipation(); // Must add AD to get correct initial R
+                addArtificialDissipation(); 
                 initial_residual = computeResidualNorm();
             }
             if (initial_residual < EPS) initial_residual = 1.0;
@@ -1298,7 +1293,7 @@ int main(int argc, char** argv) {
     std::string mesh_file = "33x33.x";
     double Mach = 0.5;
     double alpha = 1.25;
-    double CFL = 3.0; // Using stable 3.0
+    double CFL = 3.0; 
     
     // Parse command line arguments
     if (argc > 1) mesh_file = argv[1];
