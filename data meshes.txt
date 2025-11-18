@@ -1,0 +1,143 @@
+64 mesh at M=.5 at 0 AOA
+Execution time: 264.223 seconds
+Total iterations: 100000
+=== Force Coefficients ===
+CL = -0.000000
+CD = 0.025626
+CM = -0.000000
+
+
+128 mesh at M=.5 at 0 AOA
+Execution time: 556.315 seconds
+Total iterations: 100000
+
+=== Force Coefficients ===
+CL = 0.000000
+CD = 0.014534
+CM = -0.000000
+
+
+256 mesh at M=.5 at 0 AOA
+Execution time: 845.432 seconds
+Total iterations: 100000
+
+=== Force Coefficients ===
+CL = -0.000000
+CD = 0.007806
+CM = 0.000000
+
+512 mesh at M=.5 at 0 AOA
+Execution time: 2.001183e+03 seconds
+Total iterations: 100000
+
+=== Force Coefficients ===
+CL = -0.00000000
+CD = 0.00404488
+CM = -0.00000000
+
+64 mesh at M=.8 at 0 AOA
+Execution time: 4.183930e+02 seconds
+Total iterations: 100000
+
+=== Force Coefficients ===
+CL = -0.00000000
+CD = 0.03836425
+CM = -0.00000000
+
+128 mesh at M=.8 at 0 AOA
+Execution time: 5.471960e+02 seconds
+Total iterations: 50000
+
+=== Force Coefficients ===
+CL = 0.00000000
+CD = 0.02532361
+CM = 0.00000000
+
+256 mesh at M=.8 at 0 AOA
+Execution time: 8.627370e+02 seconds
+Total iterations: 50000
+
+=== Force Coefficients ===
+CL = -0.00000000
+CD = 0.01748448
+CM = -0.00000000
+
+512 mesh at M=.8 at 0 AOA
+Execution time: 2.400014e+03 seconds
+Total iterations: 10000
+
+=== Force Coefficients ===
+CL = 0.00000000
+CD = 0.01674784
+CM = -0.00000000
+
+64 mesh at M=1.2 at 0 AOA
+Execution time: 4.058780e+02 seconds
+Total iterations: 100000
+
+=== Force Coefficients ===
+CL = 0.00000000
+CD = 0.11009241
+CM = 0.00000000
+128 mesh at M=1.2 at 0 AOA
+Execution time: 5.059270e+02 seconds
+Total iterations: 100000
+
+=== Force Coefficients ===
+CL = -0.00000000
+CD = 0.10463238
+CM = 0.00000000
+
+256 mesh at M=1.2 at 0 AOA
+Execution time: 8.634420e+02 seconds
+Total iterations: 100000
+
+=== Force Coefficients ===
+CL = -0.00000000
+CD = 0.10128766
+CM = 0.00000000
+
+512 mesh at M=1.2 at 0 AOA
+Execution time: 2.252220e+03 seconds
+Total iterations: 100000
+
+=== Force Coefficients ===
+CL = -0.00000000
+CD = 0.10164176
+CM = -0.00000000
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
