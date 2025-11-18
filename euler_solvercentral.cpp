@@ -129,9 +129,9 @@ private:
 public:
     EulerSolver(const std::string& mesh_file, double Mach, double alpha_deg, double CFL_num = 0.5)
         : M_inf(Mach), alpha(alpha_deg * PI / 180.0), CFL(CFL_num), 
-          max_iter(50000), conv_tol(1e-7),
+          max_iter(100000), conv_tol(1e-7),
           use_residual_smoothing(true), res_smoothing_coeff(2.0),
-          use_artificial_dissipation(true), k2(0.25), k4(0.01) { // <-- Init JST
+          use_artificial_dissipation(true), k2(0.25), k4(0.01) { 
         
         readMesh(mesh_file);
         computeMetrics();
@@ -401,7 +401,7 @@ public:
         int cell_inci = mesh.cell_stride();
         int njc_total = mesh.njc + 2*NGHOST;
         
-        // STEP 1: Periodic BC in i-direction (FIRST for O-grid!)
+        // STEP 1: Periodic BC in i-direction 
         #pragma omp parallel for
         for (int jj = 0; jj < njc_total; jj++) {
             for (int g = 1; g <= NGHOST; g++) {
@@ -415,7 +415,7 @@ public:
         
         // STEP 2: Wall BC at j-min (slip wall)
         #pragma omp parallel for
-        for (int ii = 0; ii < cell_inci; ii++) {  // All i including ghosts
+        for (int ii = 0; ii < cell_inci; ii++) {  
             for (int g = 1; g <= NGHOST; g++) {
                 int jj_wall = NGHOST - g;
                 int jj_int = NGHOST + g - 1;
@@ -448,7 +448,7 @@ public:
         
         // STEP 3: Farfield BC at j-max
         #pragma omp parallel for
-        for (int ii = 0; ii < cell_inci; ii++) {  // All i including ghosts
+        for (int ii = 0; ii < cell_inci; ii++) {  
             for (int g = 0; g < NGHOST; g++) {
                 int jj_ghost = mesh.njc + NGHOST + g;
                 int jj_int = mesh.njc + NGHOST - 1;
@@ -470,7 +470,7 @@ public:
         }
     }
     
-    // --- Global Time Stepping (Also computes spectral radius) ---
+    // --- Global Time Stepping  ---
     void computeTimeStep() {
         int cell_inci = mesh.cell_stride();
         double dt_min = 1e30; 
@@ -1285,8 +1285,6 @@ int main(int argc, char** argv) {
     std::cout << "\n";
     std::cout << "========================================\n";
     std::cout << "  2D Euler Solver - Cell-Based O-Grid  \n";
-    std::cout << "  (JST Central Scheme + IRS + GTS)     \n";
-    std::cout << "  (RK4 Scheme + OpenMP)                \n";
     std::cout << "========================================\n\n";
     
     // Default parameters
